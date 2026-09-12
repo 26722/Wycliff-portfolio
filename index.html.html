@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wycliff Umukire — Networks &amp; Communication Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0B1622;
+    --bg-panel:#101E2B;
+    --bg-panel-2:#14293A;
+    --teal:#4FD8C4;
+    --amber:#F2B134;
+    --text-primary:#EAF2F5;
+    --text-muted:#8CA3B0;
+    --line:rgba(143,163,176,0.18);
+    --line-strong:rgba(79,216,196,0.35);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-deep);
+    color:var(--text-primary);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.mono-label{font-family:'Space Grotesk',sans-serif;}
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+
+  /* ===== MONOGRAPH BAR ===== */
+  .monograph-bar{border-bottom:1px solid var(--line);background:var(--bg-panel);}
+  .monograph-bar .wrap{
+    display:flex;justify-content:space-between;padding:9px 32px;
+    font-family:'Space Grotesk',sans-serif;font-size:11.5px;
+    letter-spacing:0.06em;color:var(--text-muted);
+  }
+  .monograph-bar .clock{color:var(--teal);}
+  @media (max-width:640px){ .monograph-bar .clock{display:none;} }
+
+  /* ===== IDENTITY BAR ===== */
+  .identity-bar{border-bottom:1px solid var(--line);background:var(--bg-panel);}
+  .identity-bar .wrap{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 32px;flex-wrap:wrap;gap:14px;
+  }
+  .identity-left{display:flex;align-items:center;gap:14px;}
+  .identity-avatar{
+    width:44px;height:44px;border-radius:50%;object-fit:cover;
+    border:1px solid var(--line-strong);flex-shrink:0;
+  }
+  .identity-name{font-size:16px;font-weight:600;line-height:1.25;}
+  .identity-sub{font-size:12.5px;color:var(--text-muted);}
+  .identity-right{
+    display:flex;align-items:center;gap:18px;font-size:13px;color:var(--text-muted);
+    flex-wrap:wrap;
+  }
+  .identity-right .status{display:flex;align-items:center;gap:7px;}
+  .identity-right .status .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);}
+  .identity-right a{text-decoration:none;font-family:'Space Grotesk',sans-serif;}
+  .identity-right a:hover{color:var(--teal);}
+  .identity-links{display:flex;gap:16px;}
+  .identity-sep{color:var(--line-strong);}
+  .identity-clock{color:var(--teal);font-family:'Space Grotesk',sans-serif;}
+  @media (max-width:640px){ .identity-sub{display:none;} }
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky;top:0;z-index:10;
+    backdrop-filter:blur(10px);
+    background:rgba(11,22,34,0.85);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px;}
+  .nav-mark{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;letter-spacing:0.02em;}
+  .nav-mark .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);}
+  .nav-links{display:flex;gap:26px;font-size:14px;color:var(--text-muted);}
+  .nav-links a{text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--teal);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ===== HERO ===== */
+  header.hero{padding:80px 0 66px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;}
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+  .kicker{
+    font-size:13.5px;color:var(--teal);font-family:'Space Grotesk',sans-serif;
+    font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .kicker::before{content:"";width:22px;height:1px;background:var(--teal);display:inline-block;}
+  h1.name{font-size:clamp(38px,6vw,58px);font-weight:700;line-height:1.05;letter-spacing:-0.01em;margin-bottom:18px;}
+  .hero-role{font-size:18.5px;color:var(--text-muted);max-width:48ch;margin-bottom:30px;}
+  .hero-role strong{color:var(--text-primary);font-weight:600;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+
+  /* ===== OBJECTIVE / CHIPS ===== */
+  .objective-box{
+    border:1px solid var(--line);background:var(--bg-panel);
+    padding:22px 26px;margin:26px 0;max-width:520px;
+  }
+  .objective-label{
+    font-family:'Space Grotesk',sans-serif;font-size:12px;color:var(--teal);
+    letter-spacing:0.05em;margin-bottom:10px;
+  }
+  .objective-text{font-size:15px;color:var(--text-muted);}
+
+  .chip-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+  .chip-primary{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--teal);color:#062521;font-weight:600;
+    padding:13px 22px;font-size:14.5px;text-decoration:none;transition:all .2s;
+  }
+  .chip-primary:hover{background:#6be3d1;transform:translateY(-1px);}
+  .id-chip{
+    border:1px solid var(--line);padding:12.5px 18px;
+    font-family:'Space Grotesk',sans-serif;font-size:13.5px;
+    color:var(--text-primary);text-decoration:none;transition:border-color .2s,color .2s;
+  }
+  .id-chip:hover{border-color:var(--line-strong);color:var(--teal);}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:6px;
+    font-size:14.5px;font-weight:500;text-decoration:none;transition:all .2s;border:1px solid transparent;
+  }
+  .btn-primary{background:var(--teal);color:#062521;}
+  .btn-primary:hover{background:#6be3d1;transform:translateY(-1px);}
+  .btn-ghost{border:1px solid var(--line);color:var(--text-primary);}
+  .btn-ghost:hover{border-color:var(--line-strong);background:rgba(79,216,196,0.06);}
+
+  /* portrait */
+  .portrait-block{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .portrait-frame{position:relative;width:220px;height:220px;border:1px solid var(--line-strong);padding:10px;}
+  .portrait-frame::before,.portrait-frame::after{content:"";position:absolute;width:14px;height:14px;border:1.5px solid var(--teal);}
+  .portrait-frame::before{top:-1px;left:-1px;border-right:0;border-bottom:0;}
+  .portrait-frame::after{bottom:-1px;right:-1px;border-left:0;border-top:0;}
+  .portrait-frame img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(15%) contrast(1.03);}
+  .portrait-cap{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:0.08em;color:var(--text-muted);text-align:center;}
+  .portrait-cap span{color:var(--teal);}
+
+  /* network diagram */
+  .net-wrap{position:relative;width:100%;aspect-ratio:1/1;margin:0 auto;}
+  .net-wrap svg{width:100%;height:100%;}
+  .node{fill:var(--bg-panel-2);stroke:var(--teal);stroke-width:1.4;}
+  .node-core{fill:var(--teal);}
+  .link{stroke:var(--line-strong);stroke-width:1;}
+  @keyframes pulse{0%,100%{opacity:0.55;} 50%{opacity:1;}}
+  .node{animation:pulse 3.4s ease-in-out infinite;}
+  .n1{animation-delay:0s;} .n2{animation-delay:.5s;} .n3{animation-delay:1s;}
+  .n4{animation-delay:1.5s;} .n5{animation-delay:2s;} .n6{animation-delay:2.5s;}
+
+  /* ===== SECTION SCAFFOLD ===== */
+  section{padding:60px 0;border-top:1px solid var(--line);}
+  .section-head{display:grid;grid-template-columns:200px 1fr;gap:32px;margin-bottom:38px;}
+  @media (max-width:700px){ .section-head{grid-template-columns:1fr;gap:10px;} }
+  .section-num{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--text-muted);letter-spacing:0.04em;}
+  .section-num span{color:var(--teal);}
+  h2.section-title{font-size:27px;font-weight:600;letter-spacing:-0.01em;}
+  .section-body{display:grid;grid-template-columns:200px 1fr;gap:32px;}
+  @media (max-width:700px){ .section-body{grid-template-columns:1fr;} }
+  .section-body > .spacer{display:block;}
+  @media (max-width:700px){ .section-body > .spacer{display:none;} }
+
+  /* ===== ABOUT ===== */
+  .about-text{font-size:16.5px;color:var(--text-muted);max-width:62ch;}
+  .about-text strong{color:var(--text-primary);}
+  .lang-row{display:flex;gap:40px;margin-top:28px;flex-wrap:wrap;}
+  .lang-item{min-width:160px;}
+  .lang-name{font-weight:600;font-size:15px;margin-bottom:8px;}
+  .lang-bar{height:5px;background:rgba(143,163,176,0.15);border-radius:3px;overflow:hidden;}
+  .lang-fill{height:100%;background:var(--teal);border-radius:3px;}
+  .lang-level{font-size:12.5px;color:var(--text-muted);margin-top:6px;}
+
+  /* ===== SKILLS ===== */
+  .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  @media (max-width:600px){ .skills-grid{grid-template-columns:1fr;} }
+  .skill-cell{background:var(--bg-panel);padding:22px 24px;}
+  .skill-cell h3{font-size:15.5px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+  .skill-cell h3::before{content:"";width:6px;height:6px;background:var(--amber);display:inline-block;flex-shrink:0;}
+  .skill-cell p{font-size:13.5px;color:var(--text-muted);}
+  .traits{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+  .trait{font-size:13px;padding:7px 14px;border:1px solid var(--line);border-radius:20px;color:var(--text-muted);}
+
+  /* ===== EXPERIENCE ===== */
+  .exp-card{border:1px solid var(--line);background:var(--bg-panel);padding:28px 30px;}
+  .exp-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:6px;}
+  .exp-role{font-size:19px;font-weight:600;}
+  .exp-period{font-size:13px;color:var(--teal);font-family:'Space Grotesk',sans-serif;}
+  .exp-org{color:var(--text-muted);font-size:14.5px;margin-bottom:16px;}
+  .exp-list{color:var(--text-muted);font-size:14.5px;padding-left:20px;}
+  .exp-list li{margin-bottom:6px;}
+
+  /* ===== TOOLS ===== */
+  .tools-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .tool-chip{font-size:13.5px;padding:9px 16px;background:var(--bg-panel);border:1px solid var(--line);}
+
+  /* ===== PROJECTS ===== */
+  .projects-grid{
+    display:grid;grid-template-columns:1fr 1fr;
+    border:1px solid var(--line);
+  }
+  @media (max-width:700px){ .projects-grid{grid-template-columns:1fr;} }
+  .project-cell{
+    padding:28px 30px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .projects-grid .project-cell:nth-child(2n){border-right:none;}
+  .projects-grid .project-cell:nth-last-child(-n+2){border-bottom:none;}
+  @media (max-width:700px){
+    .project-cell{border-right:none !important;}
+    .project-cell:last-child{border-bottom:none !important;}
+  }
+  .project-tag{
+    font-family:'Space Grotesk',sans-serif;font-size:11.5px;letter-spacing:0.05em;
+    color:var(--teal);margin-bottom:10px;
+  }
+  .project-title{font-size:19px;font-weight:600;margin-bottom:10px;}
+  .project-desc{font-size:14.5px;color:var(--text-muted);margin-bottom:18px;}
+  .project-stack{display:flex;flex-wrap:wrap;gap:8px;}
+  .stack-chip{font-size:12.5px;padding:6px 12px;border:1px solid var(--line);color:var(--text-muted);}
+
+  /* ===== TECHNICAL LEDGER ===== */
+  .ledger-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+  }
+  @media (max-width:900px){ .ledger-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .ledger-grid{grid-template-columns:1fr;} }
+  .ledger-col{
+    padding:22px 22px 26px;
+    border-right:1px solid var(--line);
+    border-top:3px solid var(--teal);
+    background:var(--bg-panel);
+  }
+  .ledger-col:nth-child(2n){border-top-color:var(--amber);}
+  .ledger-grid .ledger-col:last-child{border-right:none;}
+  @media (max-width:900px){
+    .ledger-grid .ledger-col:nth-child(2n){border-right:none;}
+  }
+  @media (max-width:520px){
+    .ledger-col{border-right:none !important;}
+  }
+  .ledger-label{
+    font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;
+    margin-bottom:14px;color:var(--text-primary);
+  }
+  .ledger-list{list-style:none;}
+  .ledger-list li{
+    font-size:14px;color:var(--text-muted);
+    padding:9px 0;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:9px;
+  }
+  .ledger-list li:last-child{border-bottom:none;}
+  .ledger-list li::before{
+    content:"";width:5px;height:5px;background:var(--teal);
+    flex-shrink:0;display:inline-block;
+  }
+
+  /* ===== DISPATCH / CONTACT ===== */
+  .dispatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+  @media (max-width:800px){ .dispatch-grid{grid-template-columns:1fr;} }
+  .status-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--teal);letter-spacing:0.02em;margin:18px 0 26px;}
+  .status-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);}
+  .dispatch-actions{display:flex;gap:0;flex-wrap:wrap;}
+  .btn-copy-email{
+    background:var(--teal);color:#062521;font-weight:600;padding:15px 24px;
+    font-size:15px;text-decoration:none;border:1px solid var(--teal);
+  }
+  .btn-copy-trigger{
+    background:transparent;color:var(--text-primary);font-weight:500;padding:15px 22px;
+    font-size:14px;border:1px solid var(--line);border-left:none;cursor:pointer;
+    font-family:'Inter',sans-serif;transition:background .2s;
+  }
+  .btn-copy-trigger:hover{background:var(--bg-panel-2);}
+  .info-table{border-top:1px solid var(--line);}
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);gap:20px;flex-wrap:wrap;}
+  .info-row .label{font-size:14.5px;color:var(--text-muted);}
+  .info-row .value{font-size:15px;font-weight:500;color:var(--text-primary);text-decoration:none;}
+  .info-row a.value:hover{color:var(--teal);}
+  .dispatch-foot{
+    display:flex;justify-content:space-between;padding-top:22px;margin-top:8px;
+    font-size:11.5px;letter-spacing:0.05em;color:var(--text-muted);
+    font-family:'Space Grotesk',sans-serif;flex-wrap:wrap;gap:8px;
+  }
+
+  footer{padding:36px 0 50px;text-align:center;color:var(--text-muted);font-size:13px;border-top:1px solid var(--line);}
+  .footer-links{margin-top:10px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+  .footer-links a{color:var(--text-muted);text-decoration:none;font-family:'Space Grotesk',sans-serif;font-size:12.5px;}
+  .footer-links a:hover{color:var(--teal);}
+</style>
+</head>
+<body>
+
+<div class="monograph-bar">
+  <div class="wrap">
+    <div>MONOGRAPH &mdash; REF WU / NCS-2026</div>
+    <div class="clock" id="clock">KIGALI &middot; --:--:--</div>
+  </div>
+</div>
+
+<div class="identity-bar">
+  <div class="wrap">
+    <div class="identity-left">
+      <img class="identity-avatar" src="photo-square.jpg" alt="Wycliff Umukire">
+      <div>
+        <div class="identity-name">Wycliff Umukire</div>
+        <div class="identity-sub">AUCA &middot; Networks &amp; Communication Systems</div>
+      </div>
+    </div>
+    <div class="identity-right">
+      <span class="status"><span class="dot"></span><span class="identity-clock" id="clock-bar">--:--:--</span> Kigali (GMT+2)</span>
+      <div class="identity-links">
+        <a href="mailto:wycliffumukire@gmail.com">Email</a>
+        <span class="identity-sep">&middot;</span>
+        <a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="identity-sep">&middot;</span>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark"><span class="dot"></span>UMUKIRE WYCLIFF</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#matrix">Ledger</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">Kigali, Rwanda &middot; AUCA &middot; Networks &amp; Communication Systems</div>
+      <h1 class="name">Wycliff Umukire</h1>
+      <p class="hero-role">
+        Networking student and IT professional building <strong>reliable networks</strong>,
+        <strong>secure systems</strong>, and the infrastructure that keeps people connected.
+        Currently pursuing a Bachelor's in Networks &amp; Communication Systems at AUCA, after
+        a year running IT and marketing across two campuses.
+      </p>
+      <div class="objective-box">
+        <div class="objective-label">OBJECTIVE MANIFEST</div>
+        <div class="objective-text">
+          Actively looking for an internship or entry-level role in Networking, IT Support,
+          or Systems Administration &mdash; Kigali, Rwanda, or remote. If that's you, I'd love
+          to hear from you.
+        </div>
+      </div>
+      <div class="chip-row">
+        <a class="chip-primary" href="mailto:wycliffumukire@gmail.com">Say hello &rarr;</a>
+        <a class="id-chip" href="tel:+250790097255">0790 097 255</a>
+        <a class="id-chip" href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+        <a class="id-chip" href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="portrait-block">
+      <div class="portrait-frame">
+        <img src="photo-square.jpg" alt="Portrait of Wycliff Umukire">
+      </div>
+      <div class="portrait-cap">FIG. 01 &mdash; <span>PORTRAIT</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">/ <span>01</span> — About</div>
+      <h2 class="section-title">Grounded in networks, driven by service</h2>
+    </div>
+    <div class="section-body">
+      <div class="spacer"></div>
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center;">
+        <div>
+          <p class="about-text">
+            Wycliff is a Rwandese networking specialist based in Kigali, currently completing
+            a <strong>Bachelor's degree in Networks and Communication Systems</strong> at AUCA,
+            building on an A2 qualification in Networking from the International Technical
+            School of Kigali. A year spent managing IT and marketing for a growing college
+            taught him that infrastructure only matters if the people relying on it are taken
+            care of &mdash; so he pairs technical precision with a strong customer-care instinct,
+            teamwork, and a habit of researching before deciding.
+          </p>
+          <div class="lang-row">
+            <div class="lang-item">
+              <div class="lang-name">English</div>
+              <div class="lang-bar"><div class="lang-fill" style="width:88%"></div></div>
+              <div class="lang-level">Very good — written, read, spoken</div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-name">Kinyarwanda</div>
+              <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+              <div class="lang-level">Excellent — written, read, spoken</div>
+            </div>
+          </div>
+        </div>
+        <div class="net-wrap" style="max-width:260px;">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <line class="link" x1="200" y1="200" x2="80" y2="100"/>
+            <line class="link" x1="200" y1="200" x2="320" y2="90"/>
+            <line class="link" x1="200" y1="200" x2="90" y2="300"/>
+            <line class="link" x1="200" y1="200" x2="310" y2="310"/>
+            <line class="link" x1="200" y1="200" x2="200" y2="60"/>
+            <line class="link" x1="80" y1="100" x2="60" y2="200"/>
+            <line class="link" x1="320" y1="90" x2="340" y2="190"/>
+            <line class="link" x1="90" y1="300" x2="60" y2="200"/>
+            <line class="link" x1="310" y1="310" x2="340" y2="190"/>
+            <circle class="node n1" cx="80" cy="100" r="9"/>
+            <circle class="node n2" cx="320" cy="90" r="9"/>
+            <circle class="node n3" cx="90" cy="300" r="9"/>
+            <circle class="node n4" cx="310" cy="310" r="9"/>
+            <circle class="node n5" cx="60" cy="200" r="7"/>
+            <circle class="node n6" cx="340" cy="190" r="7"/>
+            <circle class="node" cx="200" cy="60" r="7"/>
+            <circle class="node-core" cx="200" cy="200" r="13"/>
+            <circle r="4" fill="#F2B134">
+              <animateMotion dur="4s" repeatCount="indefinite" path="M200,200 L320,90 L340,190 Z"/>
+            </circle>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">/ <span>02</span> — Skills</div>
+      <h2 class="section-title">What he handles day to day</h2>
+    </div>
+    <div class="section-body">
+      <div class="spacer"></div>
+      <div>
+        <div class="skills-grid">
+          <div class="skill-cell">
+            <h3>Network Design &amp; Architecture</h3>
+            <p>Planning topologies that scale without becoming fragile.</p>
+          </div>
+          <div class="skill-cell">
+            <h3>Network Maintenance &amp; Management</h3>
+            <p>Keeping systems healthy long after they go live.</p>
+          </div>
+          <div class="skill-cell">
+            <h3>Network Security Management</h3>
+            <p>Reducing exposure and reacting fast when something looks wrong.</p>
+          </div>
+          <div class="skill-cell">
+            <h3>Troubleshooting &amp; Problem-Solving</h3>
+            <p>Finding the actual cause, not just the visible symptom.</p>
+          </div>
+          <div class="skill-cell">
+            <h3>Cloud &amp; Virtualization Management</h3>
+            <p>Comfortable moving infrastructure off physical constraints.</p>
+          </div>
+          <div class="skill-cell">
+            <h3>Collaboration &amp; Coordination</h3>
+            <p>Works cleanly across technical and non-technical teams.</p>
+          </div>
+        </div>
+        <div class="traits">
+          <span class="trait">Teamwork spirit</span>
+          <span class="trait">Customer care</span>
+          <span class="trait">Organizational skills</span>
+          <span class="trait">Commitment to quality</span>
+          <span class="trait">Decisive under pressure</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">/ <span>03</span> — Experience</div>
+      <h2 class="section-title">One year, two campuses</h2>
+    </div>
+    <div class="section-body">
+      <div class="spacer"></div>
+      <div>
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-role">IT and Marketing Manager</div>
+            <div class="exp-period">June 2022 — June 2023</div>
+          </div>
+          <div class="exp-org">Action College — CHIC Branch (Nyarugenge) &amp; Remera Branch (Gasabo)</div>
+          <ul class="exp-list">
+            <li>Owned IT operations and marketing across two campus branches at once.</li>
+            <li>Applied network design, maintenance, and security practices to keep both sites running.</li>
+            <li>Troubleshot issues quickly to minimize disruption for staff and students.</li>
+            <li>Coordinated across departments to align technical work with marketing goals.</li>
+          </ul>
+        </div>
+        <div style="margin-top:28px;">
+          <div class="section-num" style="margin-bottom:14px;">Computer literacy</div>
+          <div class="tools-row">
+            <span class="tool-chip">Microsoft Word</span>
+            <span class="tool-chip">Microsoft Excel</span>
+            <span class="tool-chip">Microsoft PowerPoint</span>
+            <span class="tool-chip">Internet Skills</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">/ <span>04</span> — Projects</div>
+      <h2 class="section-title">Selected work</h2>
+    </div>
+    <div class="section-body">
+      <div class="spacer"></div>
+      <div class="projects-grid">
+        <div class="project-cell">
+          <div class="project-tag">SYSTEMS &middot; RECORD MANAGEMENT</div>
+          <div class="project-title">Garage Management System</div>
+          <p class="project-desc">
+            A system built to organize a garage's daily operations — tracking vehicles in for
+            service, customer records, and job status in one place so nothing gets lost between
+            check-in and hand-back.
+          </p>
+          <div class="project-stack">
+            <span class="stack-chip">Database Design</span>
+            <span class="stack-chip">Records Management</span>
+            <span class="stack-chip">Networking</span>
+          </div>
+        </div>
+        <div class="project-cell">
+          <div class="project-tag">TOURISM &middot; ITINERARY PLANNING</div>
+          <div class="project-title">DTI — Dynamic Tourism Itinerary</div>
+          <p class="project-desc">
+            A tool for putting together travel itineraries on the fly — helping visitors plan
+            routes, stops, and timing around Rwanda's attractions instead of following a fixed
+            package.
+          </p>
+          <div class="project-stack">
+            <span class="stack-chip">Systems Design</span>
+            <span class="stack-chip">Data Modeling</span>
+            <span class="stack-chip">Networking</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="matrix">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-num">/ <span>05</span> — Technical Ledger</div>
+      <h2 class="section-title">What's under the hood</h2>
+    </div>
+    <div class="section-body">
+      <div class="spacer"></div>
+      <div class="ledger-grid">
+        <div class="ledger-col">
+          <div class="ledger-label">Networking</div>
+          <ul class="ledger-list">
+            <li>Network Design &amp; Architecture</li>
+            <li>Network Maintenance &amp; Management</li>
+            <li>Network Security Management</li>
+            <li>Troubleshooting &amp; Problem-Solving</li>
+          </ul>
+        </div>
+        <div class="ledger-col">
+          <div class="ledger-label">Cloud &amp; Infrastructure</div>
+          <ul class="ledger-list">
+            <li>Cloud &amp; Virtualization Management</li>
+            <li>System Uptime &amp; Reliability</li>
+            <li>Research &amp; Development</li>
+          </ul>
+        </div>
+        <div class="ledger-col">
+          <div class="ledger-label">Productivity &amp; Tools</div>
+          <ul class="ledger-list">
+            <li>Microsoft Word</li>
+            <li>Microsoft Excel</li>
+            <li>Microsoft PowerPoint</li>
+            <li>Internet &amp; Research Tools</li>
+          </ul>
+        </div>
+        <div class="ledger-col">
+          <div class="ledger-label">Professional Practice</div>
+          <ul class="ledger-list">
+            <li>Collaboration &amp; Coordination</li>
+            <li>Customer Care</li>
+            <li>Organizational Skills</li>
+            <li>Decision-Making</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-num">/ <span>06</span> — Dispatch</div>
+    <div class="dispatch-grid">
+      <div>
+        <h2 class="section-title" style="font-size:32px;margin-top:10px;">Got a role, a project, or just a question? Let's talk.</h2>
+        <div class="status-badge"><span class="dot"></span>Open to internships &amp; entry-level roles — Kigali, Rwanda</div>
+        <div class="dispatch-actions">
+          <a class="btn-copy-email" href="mailto:wycliffumukire@gmail.com">wycliffumukire@gmail.com</a>
+          <button class="btn-copy-trigger" onclick="copyEmail(this)">Copy email</button>
+        </div>
+      </div>
+      <div class="info-table">
+        <div class="info-row">
+          <span class="label">Phone</span>
+          <a class="value" href="tel:+250790097255">+250 790 097 255</a>
+        </div>
+        <div class="info-row">
+          <span class="label">LinkedIn</span>
+          <a class="value" href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">Wycliff Umukire</a>
+        </div>
+        <div class="info-row">
+          <span class="label">GitHub</span>
+          <a class="value" href="https://github.com/" target="_blank" rel="noopener">wycliff-umukire</a>
+        </div>
+        <div class="info-row">
+          <span class="label">Location</span>
+          <span class="value">Gasabo, Kigali, Rwanda (GMT+2)</span>
+        </div>
+      </div>
+    </div>
+    <div class="dispatch-foot">
+      <span>REF WU / NCS-2026 &mdash; WYCLIFF UMUKIRE</span>
+      <span id="clock-foot">KIGALI LOCAL TIME --:--:--</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  REF WU / NCS-2026 &mdash; WYCLIFF UMUKIRE &mdash; KIGALI, RWANDA
+  <div class="footer-links">
+    <a href="mailto:wycliffumukire@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script>
+  function tick(){
+    var now = new Date();
+    var kigali = new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Kigali' }));
+    var pad = function(n){ return n.toString().padStart(2,'0'); };
+    var time = pad(kigali.getHours()) + ':' + pad(kigali.getMinutes()) + ':' + pad(kigali.getSeconds());
+    var el = document.getElementById('clock');
+    if(el){ el.textContent = 'KIGALI · ' + time; }
+    var barEl = document.getElementById('clock-bar');
+    if(barEl){ barEl.textContent = time; }
+    var footEl = document.getElementById('clock-foot');
+    if(footEl){ footEl.textContent = 'KIGALI LOCAL TIME ' + time; }
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  function copyEmail(btn){
+    navigator.clipboard.writeText('wycliffumukire@gmail.com').then(function(){
+      var original = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function(){ btn.textContent = original; }, 1600);
+    });
+  }
+</script>
+
+</body>
+</html>
