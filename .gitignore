@@ -1,0 +1,62 @@
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Local config (copy application.properties.example) ###
+application.properties
+application-*.properties
+!application.properties.example
+.env
+
+### AI assistant / tooling files ###
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+.github/modernize/
+.github/copilot-instructions.md
+.copilot/
+.cursor/
+.cursorrules
+.windsurf/
+.windsurfrules
+.aider*
+.continue/
+.codeium/
+.gemini/
+GEMINI.md
+.codex/
+notes/
+HELP.md
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### macOS ###
+.DS_Store
